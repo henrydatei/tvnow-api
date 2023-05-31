@@ -24,3 +24,12 @@ print(lets_dance)
 episodes = api.get_episodes_for_season(lets_dance.seasons[0])
 print(episodes)
 ```
+Note: Sometime you get a link like `https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/%x/image-147.png`. This is not a valid link, it's more like a template. TVnow offers images in multiple resolutions, just replace the `%` with on of 200, 400, 600, 800, 1200, 1400, 1600 or 1800. So this link becomes 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/200x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/400x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/600x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/800x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/1200x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/1400x/image-147.png, 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/1600x/image-147.png or 
+- https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/1800x/image-147.png
