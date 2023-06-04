@@ -54,7 +54,9 @@ class TvnowAPI():
                 r = requests.get(self.host + '/module/teaserrow/format/episode/' + str(season.belongs_to), headers=self.headers, params=params)
                 r.raise_for_status()
                 if 'items' in r.json():
-                    episodes.extend([dacite.from_dict(data_class=Episode, data=episode) for episode in r.json()['items']])
+                    partial_episodes = [dacite.from_dict(data_class=Episode, data=episode) for episode in r.json()['items']]
+                    partial_episodes.reverse()
+                    episodes.extend(partial_episodes)
             return episodes
     
     def search(self, query: str) -> List[Series]:
