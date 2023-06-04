@@ -12,8 +12,8 @@ from TvnowAPI import TvnowAPI
 
 api = TvnowAPI()
 
-# search for Lets Dance
-results = api.search("Lets Dance")
+# search for the series Lets Dance
+results = api.results = api.search_series("Lets Dance")
 print(results)
 
 # get some information for the show "Let's Dance" which has the ID 21
@@ -23,6 +23,14 @@ print(lets_dance)
 # get infos for the recent season, 2023
 episodes = api.get_episodes_for_season(lets_dance.seasons[0])
 print(episodes)
+
+# search for movies with "Die Spezialeinheit"
+results = api.search_movies("Die Spezialeinheit")
+print(results)
+
+# get some information for the movie "Die Spezialeinheit - Im Einsatz mit der Bundespolizei" which has the ID 21033
+movie = api.get_movie(21033)
+print(movie)
 ```
 Note: Sometimes you get a link like `https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/%x/image-147.png`. This is not a valid link, it's more like a template. TVnow offers images in multiple resolutions, just replace the `%` with on of 200, 400, 600, 800, 1200, 1400, 1600 or 1800. So this link becomes 
 - https://ais-cf.tvnow.de/tvnow/format/21_04metalogo/200x/image-147.png, 

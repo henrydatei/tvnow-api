@@ -8,4 +8,5 @@ class Series():
     id: int
     title: str
     seasons: List[Season]
+    imageUrl: str
     

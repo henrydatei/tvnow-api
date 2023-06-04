@@ -1,5 +1,5 @@
 import dataclasses
-from typing import List
+from typing import List, Optional
 
 from classes.Breakpoint import Breakpoint
 from classes.Download import Download
@@ -11,7 +11,7 @@ class Video():
     subHeadline: str
     episode: int
     season: int
-    fsk: str
+    fsk: Optional[str]
     fskRaw: int
     genres: List[str]
     missedType: int

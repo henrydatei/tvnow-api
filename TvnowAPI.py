@@ -6,6 +6,7 @@ import dacite
 from classes.Season import Season
 from classes.Series import Series
 from classes.Episode import Episode
+from classes.Movie import Movie
 
 @dataclasses.dataclass
 class TvnowAPI():
@@ -29,7 +30,7 @@ class TvnowAPI():
     def get_series(self, series_id: int) -> Series:
         r = requests.get(self.host + '/page/format/' + str(series_id), headers=self.headers)
         r.raise_for_status()
-        s = Series(id=series_id, title=r.json()['title'], seasons=[])
+        s = Series(id=series_id, title=r.json()['title'], seasons=[], imageUrl=f'https://ais-cf.tvnow.de/tvnow/format/{series_id}_02logo/%x/image.jpg')
         for module in r.json()['modules']:
             if module['label'] == 'Navigation Module':
                 if module['navigation']['navigationType'] == 'season':
@@ -40,6 +41,11 @@ class TvnowAPI():
                         s.seasons.append(Season(id=season['year'], belongs_to=series_id, navigation_type='annual'))
                     
         return s
+    
+    def get_movie(self, movie_id) -> Movie:
+        r = requests.get(self.host + '/module/teaserrow/format/highlight/' + str(movie_id), headers=self.headers)
+        r.raise_for_status()
+        return dacite.from_dict(data_class=Movie, data=r.json()['teaser'])
     
     def get_episodes_for_season(self, season: Season) -> List[Episode]:
         if season.navigation_type == 'season':
@@ -59,8 +65,12 @@ class TvnowAPI():
                     episodes.extend(partial_episodes)
             return episodes
     
-    def search(self, query: str) -> List[Series]:
+    def search_series(self, query: str) -> List[Series]:
         r = requests.get(self.host + '/search/' + query, headers=self.headers)
         r.raise_for_status()
-        return [self.get_series(series['id']) for series in r.json()['items']]
-            
+        return [self.get_series(series['id']) for series in r.json()['items'] if series['reporting']['dimension_56'] == 'show' or series['reporting']['dimension_56'] == 'serie']
+    
+    def search_movies(self, query: str) -> List[Movie]:
+        r = requests.get(self.host + '/search/' + query, headers=self.headers)
+        r.raise_for_status()
+        return [self.get_movie(movie['id']) for movie in r.json()['items'] if movie['reporting']['dimension_56'] == 'film']
